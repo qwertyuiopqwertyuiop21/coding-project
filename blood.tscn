@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2rxawo1oo01s"]
+[gd_scene load_steps=5 format=3 uid="uid://c2rxawo1oo01s"]
+
+[ext_resource type="Script" path="res://blood.gd" id="1_fbnng"]
 
 [sub_resource type="Curve" id="Curve_qogco"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.329474), 0.0, 0.0, 0, 0]
@@ -22,6 +24,12 @@ hue_variation_min = -1.0
 hue_variation_max = -1.0
 
 [node name="GPUParticles2D" type="GPUParticles2D"]
+scale = Vector2(2, 2)
+emitting = false
 amount = 267
 process_material = SubResource("ParticleProcessMaterial_lvqbf")
+one_shot = true
 explosiveness = 1.0
+script = ExtResource("1_fbnng")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

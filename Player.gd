@@ -10,6 +10,10 @@ const BULLET = preload("res://bullet.tscn")
 @onready var timer: Timer = $Timer
 
 var can_shoot = true
+var health=100
+var ammo=150
+var magazine=15
+var magazinemax=15
 
 func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
@@ -25,7 +29,7 @@ func _physics_process(delta: float) -> void:
 	
 
 func _process(delta: float) -> void:
-	if Input.is_action_pressed("shoot") and can_shoot:
+	if Input.is_action_pressed("shoot") and can_shoot and magazine > 0:
 		var new_bullet = BULLET.instantiate()
 		new_bullet.global_position = bullet_spawn.global_position
 		new_bullet.rotation = pivot.rotation
@@ -33,7 +37,14 @@ func _process(delta: float) -> void:
 		get_tree().root.add_child(new_bullet)
 		can_shoot = false
 		timer.start()
-
+		magazine-=1
+	$Control/hp.text=str(health)
+	$Control/ammo.text=str(ammo)
+	$Control/Magazine.text=str(magazine)
+	if Input.is_action_just_pressed("reload") and ammo > 0:
+		ammo-=(magazinemax-magazine)
+		magazine=magazinemax
+	
 
 func _on_timer_timeout() -> void:
 	can_shoot = true
