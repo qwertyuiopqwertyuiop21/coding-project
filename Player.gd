@@ -1,5 +1,5 @@
 extends CharacterBody2D
-
+class_name Player
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
@@ -11,7 +11,7 @@ const BULLET = preload("res://bullet.tscn")
 
 var can_shoot = true
 var health=100
-var ammo=150
+var ammo=20
 var magazine=15
 var magazinemax=15
 
@@ -42,10 +42,19 @@ func _process(delta: float) -> void:
 	$Control/ammo.text=str(ammo)
 	$Control/Magazine.text=str(magazine)
 	if Input.is_action_just_pressed("reload") and ammo > 0:
-		ammo-=(magazinemax-magazine)
+		ammo-=min((magazinemax-magazine),ammo)
 		magazine=magazinemax
 	
+const BLOOD = preload("res://blood.tscn")
 
 func _on_timer_timeout() -> void:
 	can_shoot = true
 	pass # Replace with function body.
+func take_damage(amount):
+	health-=amount
+	if health <= 0:
+		var blood=BLOOD.instantiate()
+		get_tree().root.add_child(blood)
+		blood.position=self.position
+		blood.emitting=true
+		queue_free()

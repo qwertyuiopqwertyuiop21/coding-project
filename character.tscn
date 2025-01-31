@@ -9,6 +9,7 @@ height = 24.0
 
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(377, 270)
+collision_layer = 2
 script = ExtResource("1_51map")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

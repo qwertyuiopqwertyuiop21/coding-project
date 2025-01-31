@@ -1,4 +1,5 @@
 extends CharacterBody2D
+var isenemyshot=false
 
 var direction : Vector2 = Vector2(0,0)
 var SPEED := 1000
@@ -13,9 +14,13 @@ func _process(delta: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
+	if isenemyshot:
+		set_collision_mask_value(1,false)
+		set_collision_mask_value(2,true)
 	velocity = direction * SPEED * delta
 	var collisions = move_and_collide(velocity)
 	if collisions:
+		print(collisions)
 		var collider = collisions.get_collider()
 		var cell_rid = collisions.get_collider_rid()
 
@@ -24,9 +29,14 @@ func _physics_process(delta: float) -> void:
 			var cell_data = collider.get_cell_tile_data(cell_coord)
 			if cell_data:
 				print(cell_data.get_custom_data("test") )
-
-			
+			queue_free()
+							
 		if collider.has_method("take_damage"):
-			collider.take_damage(2)
-		queue_free()
+			if collider is Player and isenemyshot:
+				collider.take_damage(2)
+				queue_free()
+			if collider is Enemy and isenemyshot==false:
+				queue_free()
+				collider.take_damage(2)
+		
 	
