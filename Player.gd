@@ -8,7 +8,7 @@ const JUMP_VELOCITY = -400.0
 @onready var bullet_spawn: Node2D = $pivot/Sprite2D/BulletSpawn
 const BULLET = preload("res://bullet.tscn")
 @onready var timer: Timer = $Timer
-
+const GAMEOVER = preload("res://gameover.tscn")
 var can_shoot = true
 var health=100
 var ammo=20
@@ -58,3 +58,6 @@ func take_damage(amount):
 		blood.position=self.position
 		blood.emitting=true
 		queue_free()
+		#how to change to new scene
+		get_tree().change_scene_to_file("res://gameover.tscn")
+		
